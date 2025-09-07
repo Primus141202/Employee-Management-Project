@@ -1,9 +1,20 @@
 package com.sprk.employee.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Schema(
+        name = "Employee",
+        description = "Schema to hold information of Employee"
+)
 public class EmployeeRequest {
 
     @NotBlank(message = "First name is required")
