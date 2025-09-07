@@ -1,9 +1,12 @@
 package com.sprk.employee.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@Entity
+@AllArgsConstructor
 public class Employee {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)private Integer id;
