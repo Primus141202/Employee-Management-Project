@@ -1,4 +1,11 @@
 package com.sprk.employee.repository;
 
-public interface DepartmentRepository {
+import com.sprk.employee.entity.Department;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface DepartmentRepository extends JpaRepository {
+    Optional<Department> findByCode(String code);
+    boolean existsByCode(String code);
 }
