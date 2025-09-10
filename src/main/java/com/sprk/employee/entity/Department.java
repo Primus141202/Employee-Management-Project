@@ -12,8 +12,8 @@ public class Department {
 @GeneratedValue(strategy = GenerationType.IDENTITY)private Integer id;
 
     @Column(nullable = false,length = 32)
-    private String name;
+    private String code;
 
     @Column(nullable = false,length = 128)
-    private String location;
+    private String name;
 }
