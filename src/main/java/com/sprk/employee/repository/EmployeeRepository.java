@@ -16,6 +16,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Page<Employee>
     findByDepartment_Code(String departmentCode, Pageable pageable);
 
-
+    //combining with simple filters for pagination
+    Page<Employee> findByGenderAndDepartment_Code(String gender,String departmentCode,Pageable pageable);
 
 }
