@@ -11,5 +11,5 @@ public interface EmployeeService {
     void delete(Integer id);
 
     //Optional filters
-    Page<EmployeeResponse>list(Integer page, Integer size, String sortBy, String direction, String gender, String departmentCode);
+    Page<EmployeeResponse>list(Integer page, Integer size, String sortBy, String direction, String gender, String departmentId);
 }
