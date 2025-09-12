@@ -1,38 +1,38 @@
 package com.sprk.employee.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @Entity
-@AllArgsConstructor
+@Table(name = "employees")
 public class Employee {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)private Integer id;
 
-    @Column(nullable=false, length=64)
-    private String firstName;
-
-    @Column(nullable = false,length = 64)
-    private String lastName;
-
-    private int age;
-
-    @Column(nullable = false,length = 10)
-    private String gender;
-
-    private double salary;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(nullable = false)
+    private Integer age;
+
+    @Column(nullable = false)
+    private String gender;
+
+    @Column(nullable = false)
+    private Double salary;
+
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-
-    @JoinColumn(name="department_id")
-    @JsonBackReference
+    // Many employees belong to one department
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id")
     private Department department;
-
 
 }
