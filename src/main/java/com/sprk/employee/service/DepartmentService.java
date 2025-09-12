@@ -1,19 +1,23 @@
 package com.sprk.employee.service;
 
+import com.sprk.employee.dto.DepartmentRequest;
+import com.sprk.employee.dto.DepartmentResponse;
 import com.sprk.employee.entity.Department;
 
+import java.util.List;
+
 public interface DepartmentService {
+
     Department getOrCreate(String code, String nameIfCreate);
-    Department getByCodeorThrow(String code);
+
+    Department getByCodeOrThrow(String code);
+
     DepartmentResponse create(DepartmentRequest request);
 
-    // Get a list of all departments as DTOs
     List<DepartmentResponse> getAll();
 
-    // Get a single department by ID as DTO
     DepartmentResponse getById(Long id);
 
-    // Optionally, if you want to add update and delete
     DepartmentResponse update(Long id, DepartmentRequest request);
 
     void delete(Long id);
