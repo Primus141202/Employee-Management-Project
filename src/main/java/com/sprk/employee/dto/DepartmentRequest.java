@@ -11,7 +11,12 @@ public class DepartmentRequest {
             required = true
     )
     private String name;
-
+    @Schema(
+            description = "Code of the department",
+            example = "HUMAN_RES",
+            required = true
+    )
+    private String code;
     @Schema(
             description = "Location of the department",
             example = "Mumbai Office",
