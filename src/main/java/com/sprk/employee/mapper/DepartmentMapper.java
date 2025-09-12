@@ -12,10 +12,12 @@ public class DepartmentMapper {
 
     public static Department toEntity(DepartmentRequest dto) {
         Department department = new Department();
+        department.setCode(dto.getCode());
         department.setName(dto.getName());
         department.setLocation(dto.getLocation());
         return department;
     }
+
 
     public static DepartmentResponse toResponse(Department department) {
         DepartmentResponse dto = new DepartmentResponse();
