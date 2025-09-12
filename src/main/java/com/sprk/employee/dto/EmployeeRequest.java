@@ -29,7 +29,7 @@ public class EmployeeRequest {
     @NotBlank(message = "Gender is required")
     private String gender;
 
-    @Min(value = 10000, message = "Salary must be>=10000")
+    @Min(value = 10000, message = "Salary must be >=10000")
     private double salary;
 
     @Email(message = "Invalid Email")
@@ -37,5 +37,5 @@ public class EmployeeRequest {
     private String email;
 
     @NotBlank(message = "Department Id is required")
-    private long departmentID;
+    private String departmentID; // Should be String to match department code
 }
