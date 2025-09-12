@@ -21,12 +21,12 @@ public class EmployeeMapper {
 
     // Convert Request DTO → Entity
     public static Employee toEntity(EmployeeRequest request, Department department) {
-        if (request == null) {
-            return null;
-        }
+        if (request == null) return null;
         Employee emp = new Employee();
         emp.setFirstName(request.getFirstName());
         emp.setLastName(request.getLastName());
+        emp.setAge(request.getAge());           // THIS LINE MUST EXIST
+        emp.setGender(request.getGender());
         emp.setEmail(request.getEmail());
         emp.setSalary(request.getSalary());
         emp.setDepartment(department);
