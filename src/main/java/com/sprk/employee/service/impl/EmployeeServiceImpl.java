@@ -11,43 +11,47 @@ import com.sprk.employee.service.DepartmentService;
 import com.sprk.employee.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.awt.print.Pageable;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
+
     private final EmployeeRepository employeeRepository;
     private final DepartmentService departmentService;
 
-    public EmployeeResponse create(EmployeeRequest request){
-        if (employeeRepository.existsByEmail(request.getEmail())){
-            throw new IllegalArgumentException("Email already exists: "+request.getEmail());
+    @Override
+    public EmployeeResponse create(EmployeeRequest request) {
+        if (employeeRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("Email already exists: " + request.getEmail());
         }
-        Department dept=departmentService.getOrCreate(request.getDepartmentID(),request.getDepartmentID());
-        Employee saved=employeeRepository.save(EmployeeMapper.toEntity(request, dept));
+        Department dept = departmentService.getOrCreate(request.getDepartmentID(), request.getDepartmentID());
+        Employee saved = employeeRepository.save(EmployeeMapper.toEntity(request, dept));
         return EmployeeMapper.toResponse(saved);
     }
 
-    public EmployeeResponse getById(Integer id){
-        Employee e=employeeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Employee id"+id+"not found"));
+    @Override
+    public EmployeeResponse getById(Integer id) {
+        Employee e = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee id " + id + " not found"));
         return EmployeeMapper.toResponse(e);
     }
 
-    public EmployeeResponse update(Integer id, EmployeeRequest request){
-        Employee e=employeeRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Employee id"+id+"not found"));
+    @Override
+    public EmployeeResponse update(Integer id, EmployeeRequest request) {
+        Employee e = employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Employee id " + id + " not found"));
 
         Department dept = null;
-        if (StringUtils.hasText(request.getDepartmentID())){
-            dept=departmentService.getByCodeorThrow(request.getDepartmentID());
+        if (StringUtils.hasText(request.getDepartmentID())) {
+            dept = departmentService.getByCodeOrThrow(request.getDepartmentID());
         }
-        EmployeeMapper.copyNonNull(request, e, dept);
-        // If email was changed, check uniqueness
-        if (StringUtils.hasText(request.getEmail()) && employeeRepository.existsByEmail(request.getEmail())
+        EmployeeMapper.updateEntity(e, request, dept);
+
+        if (StringUtils.hasText(request.getEmail())
+                && employeeRepository.existsByEmail(request.getEmail())
                 && !request.getEmail().equalsIgnoreCase(e.getEmail())) {
             throw new IllegalArgumentException("Email already exists: " + request.getEmail());
         }
@@ -65,28 +69,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Page<EmployeeResponse> list(Integer page, Integer size, String sortBy, String direction,
-                                       String gender, String departmentCode) {
-        int p = (page == null || page < 0) ? 0 : page;
-        int s = (size == null || size <= 0) ? 10 : size;
-        String sortField = StringUtils.hasText(sortBy) ? sortBy : "id";
-        Sort sort = "desc".equalsIgnoreCase(direction) ? Sort.by(sortField).descending() : Sort.by(sortField).ascending();
-        Pageable pageable = PageRequest.of(p, s, sort);
-
+    public Page<EmployeeResponse> getAll(String department, Pageable pageable) {
         Page<Employee> employees;
-
-        if (StringUtils.hasText(gender) && StringUtils.hasText(departmentCode)) {
-            employees = employeeRepository.findByGenderAndDepartment_Code(gender, departmentCode, pageable);
-        } else if (StringUtils.hasText(gender)) {
-            employees = employeeRepository.findByGender(gender, pageable);
-        } else if (StringUtils.hasText(departmentCode)) {
-            employees = employeeRepository.findByDepartment_Code(departmentCode, pageable);
+        if (StringUtils.hasText(department)) {
+            employees = employeeRepository.findByDepartment_Code(department, pageable);
         } else {
             employees = employeeRepository.findAll(pageable);
         }
-
         return employees.map(EmployeeMapper::toResponse);
     }
+
+    @Override
+    public Page<EmployeeResponse> list(Integer page, Integer size, String sortBy, String direction, String gender, String departmentCode) {
+        return null;
+    }
 }
-
-
