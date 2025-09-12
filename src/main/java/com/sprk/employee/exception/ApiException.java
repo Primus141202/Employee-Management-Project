@@ -1,6 +1,10 @@
 package com.sprk.employee.exception;
 
-public class ApiException {
+import lombok.Getter;
+
+@Getter
+public class ApiException extends RuntimeException {
+
     private final int statusCode;
 
     public ApiException(String message, int statusCode) {
@@ -8,7 +12,4 @@ public class ApiException {
         this.statusCode = statusCode;
     }
 
-    public int getStatusCode() {
-        return statusCode;
-    }
 }
