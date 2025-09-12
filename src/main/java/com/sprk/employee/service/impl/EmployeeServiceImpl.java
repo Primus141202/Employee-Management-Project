@@ -5,6 +5,7 @@ import com.sprk.employee.dto.EmployeeResponse;
 import com.sprk.employee.entity.Department;
 import com.sprk.employee.entity.Employee;
 import com.sprk.employee.exception.ResourceNotFoundException;
+import com.sprk.employee.mapper.EmployeeMapper;
 import com.sprk.employee.repository.EmployeeRepository;
 import com.sprk.employee.service.DepartmentService;
 import com.sprk.employee.service.EmployeeService;
