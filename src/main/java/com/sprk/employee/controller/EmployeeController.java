@@ -3,20 +3,21 @@ package com.sprk.employee.controller;
 import com.sprk.employee.dto.EmployeeRequest;
 import com.sprk.employee.dto.EmployeeResponse;
 import com.sprk.employee.service.EmployeeService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
-
 @RestController
 @RequestMapping("/api/employees")
 @RequiredArgsConstructor
 public class EmployeeController {
+
     private final EmployeeService employeeService;
 
     @PostMapping
@@ -34,22 +35,22 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable Integer id) {
         EmployeeResponse response = employeeService.getById(id);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmployeeResponse> updateEmployee(
-            @PathVariable Long id,
+            @PathVariable Integer id,
             @Valid @RequestBody EmployeeRequest request) {
-        EmployeeResponse updated = employeeService.updateEmployee(id, request);
+        EmployeeResponse updated = employeeService.update(id, request);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Integer id) {
         employeeService.delete(id);
-        return ResponseEntity.noContent().build(); // 204 No Content
+        return ResponseEntity.noContent().build();
     }
 }
