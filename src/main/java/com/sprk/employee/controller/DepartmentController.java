@@ -7,11 +7,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/departments")
@@ -40,6 +42,15 @@ public class DepartmentController {
         DepartmentResponse department = departmentService.getById(id);
         return ResponseEntity.ok(department);
     }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<List<DepartmentResponse>> createDepartments(@Valid @RequestBody List<DepartmentRequest> departmentRequests) {
+        List<DepartmentResponse> savedDepartments = departmentRequests.stream()
+                .map(departmentService::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedDepartments);
+    }
+
 
     @PostMapping
     @Operation(summary = "Create a new department", description = "Adds a new department into the system")
