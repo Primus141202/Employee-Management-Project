@@ -9,6 +9,7 @@ import com.sprk.employee.entity.Employee;
 import java.util.stream.Collectors;
 
 public class DepartmentMapper {
+
     public static Department toEntity(DepartmentRequest dto) {
         Department department = new Department();
         department.setName(dto.getName());
@@ -16,12 +17,11 @@ public class DepartmentMapper {
         return department;
     }
 
-    // Entity -> Response
     public static DepartmentResponse toResponse(Department department) {
         DepartmentResponse dto = new DepartmentResponse();
         dto.setId(department.getId());
         dto.setName(department.getName());
-
+        dto.setLocation(department.getLocation());
         if (department.getEmployees() != null) {
             dto.setEmployees(
                     department.getEmployees().stream()
@@ -29,22 +29,22 @@ public class DepartmentMapper {
                             .collect(Collectors.toList())
             );
         }
-
         return dto;
     }
 
-    // Helper: Employee -> EmployeeResponse
     private static EmployeeResponse mapEmployeeToResponse(Employee emp) {
         EmployeeResponse empDto = new EmployeeResponse();
         empDto.setId(emp.getId());
         empDto.setFirstName(emp.getFirstName());
         empDto.setLastName(emp.getLastName());
+        empDto.setAge(emp.getAge());
+        empDto.setGender(emp.getGender());
         empDto.setEmail(emp.getEmail());
         empDto.setSalary(emp.getSalary());
+        empDto.setDepartmentID(emp.getDepartment().getCode());
         return empDto;
     }
 
-    // Existing utility
     public static String toName(Department dept) {
         return dept != null ? dept.getName() : null;
     }
