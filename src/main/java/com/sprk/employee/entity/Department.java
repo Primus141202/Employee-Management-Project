@@ -1,19 +1,27 @@
 package com.sprk.employee.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import java.util.List;
 
 @Data
 @Entity
-@AllArgsConstructor
+@Table(name = "departments")
 public class Department {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)private Integer id;
 
-    @Column(nullable = false,length = 32)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true, nullable = false)
     private String code;
 
-    @Column(nullable = false,length = 128)
+    @Column(nullable = false)
     private String name;
+
+    private String location;
+
+    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Employee> employees;
+
 }
