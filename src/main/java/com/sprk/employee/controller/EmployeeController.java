@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/employees")
 @RequiredArgsConstructor
@@ -47,6 +50,14 @@ public class EmployeeController {
         EmployeeResponse updated = employeeService.update(id, request);
         return ResponseEntity.ok(updated);
     }
+    @PostMapping("/bulk")
+    public ResponseEntity<List<EmployeeResponse>> createEmployees(@Valid @RequestBody List<EmployeeRequest> employeeRequests) {
+        List<EmployeeResponse> savedEmployees = employeeRequests.stream()
+                .map(employeeService::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedEmployees);
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Integer id) {
